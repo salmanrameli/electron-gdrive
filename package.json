@@ -1,0 +1,52 @@
+{
+  "name": "electron-gdrive",
+  "private": true,
+  "main": "main.js",
+  "homepage": "./",
+  "author": {
+    "name": "Salman Rameli",
+    "email": "salmanrameli@gmail.com"
+  },
+  "scripts": {
+    "react-start": "react-scripts start",
+    "react-build": "react-scripts build",
+    "react-test": "react-scripts test --env=jsdom",
+    "react-eject": "react-scripts eject",
+    "electron-build": "electron-builder",
+    "release": "yarn react-build && electron-builder --publish=always",
+    "build": "yarn react-build && yarn electron-build",
+    "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\""
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "cross-env": "^7.0.0",
+    "electron-is-dev": "^1.1.0",
+    "electron-store": "^5.1.0",
+    "googleapis": "^39.2.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-scripts": "3.3.1"
+  },
+  "devDependencies": {
+    "concurrently": "^5.1.0",
+    "electron": "^8.0.0",
+    "electron-builder": "^22.3.2",
+    "foreman": "^3.0.1",
+    "wait-on": "^4.0.0"
+  }
+}
