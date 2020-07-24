@@ -35,6 +35,7 @@ class App extends React.Component {
             needToken: "",
             folders: [],
             files: [],
+            pictures: [],
             previousDirectories: [],
             previousDirectoriesName: [],
             currentDirectory: "",
@@ -145,25 +146,43 @@ class App extends React.Component {
                 if(files.length) {
                     let arrayOfFolders = []
                     let arrayOfFiles = []
+                    let arrayOfPictures = []
         
                     files.map((file) => {
-                        let mimeType = file.mimeType
+                        let mimeType = String(file.mimeType)
 
-                        mimeType = mimeType.split("/")
-                        
-                        if(mimeType[1] === "vnd.google-apps.folder") {
+                        if(mimeType.includes("vnd.google-apps.folder")) {
                             arrayOfFolders.push(file)
+                        } else if(mimeType.includes("image")) {
+                            arrayOfPictures.push(file)
                         } else {
                             arrayOfFiles.push(file)
                         }
                     });
 
-                    this.setState({
-                        folders: arrayOfFolders,
-                        files: arrayOfFiles
-                    })
-                    
-                    // this.listFiles(auth);
+                    if(arrayOfFolders.length > 0) {
+                        this.setState({
+                            folders: arrayOfFolders
+                        })
+                    }
+
+                    if(arrayOfPictures.length > 0) {
+                        this.setState({
+                            files: arrayOfFiles
+                        })
+                    }
+
+                    if(arrayOfPictures.length > 0) {
+                        this.setState({
+                            pictures: arrayOfPictures
+                        })
+                    }
+
+                    // this.setState({
+                    //     folders: arrayOfFolders,
+                    //     files: arrayOfFiles,
+                    //     pictures: arrayOfPictures
+                    // })
                 } else {
                     console.log('No files found.')
                 }
@@ -177,7 +196,10 @@ class App extends React.Component {
             this.state.previousDirectoriesName.push(name)
 
             this.setState({
-                currentDirectory: id
+                currentDirectory: id,
+                folders: [],
+                files: [],
+                pictures: [],
             })
         } else {
             this.state.previousDirectoriesName.push(name)
@@ -185,7 +207,10 @@ class App extends React.Component {
 
             this.setState({
                 previousDirectory: currentDirectory,
-                currentDirectory: id
+                currentDirectory: id,
+                folders: [],
+                files: [],
+                pictures: [],
             })
 
             this.state.previousDirectories.push(currentDirectory)
@@ -224,10 +249,10 @@ class App extends React.Component {
                     </div>
                 :
                     <div className="col-md-12">
-                        <div className="mb-2 border-bottom">
+                        <div className="mb-2">
                             <h5>
                                 {this.state.previousDirectories.length === 0 ?
-                                    <button className="btn btn-outline-secondary mr-3" disabled><i className="fas fa-arrow-left"></i></button>
+                                    ""
                                 :
                                     <button className="btn btn-outline-secondary mr-3" onClick={(e) => this.handleBackButtonOnClick(e)}><i className="fas fa-arrow-left"></i></button>
                                 }
@@ -251,20 +276,51 @@ class App extends React.Component {
                                 </div>
                             ))}
                         </div>
-                        <div className="pb-2 mt-4 mb-2 border-bottom">
-                            <h5>Files</h5>
-                        </div>
-                        <div className="card-columns">
-                            {this.state.files.map(file => (
-                                <div className="card text-white border-dark" key={file.id}>
-                                    <img className="card-img overlayed" src={file.thumbnailLink} alt={file.name} style={{ backgroundSize: 'cover', maxHeight: '250px', minHeight: '200px' }}></img>
-                                    <div className="card-img-overlay">
-                                        <h5 className="card-title">{file.name}</h5>
-                                        <button className="btn btn-sm btn-light btn-download" onClick={(e) => this.handleDownloadButtonOnClick(e, file)}><i className="fas fa-file-download"></i></button>
+                        {this.state.pictures.length ? 
+                            <div>
+                                <div className="pb-2 mt-4 mb-2">
+                                    <h5>Images</h5>
+                                </div>
+                                <div className="card-columns">
+                                    {this.state.pictures.map(picture => (
+                                    <div className="card text-white border-dark" key={picture.id}>
+                                            <img className="card-img overlayed" src={picture.thumbnailLink} alt={picture.name} style={{ backgroundSize: 'cover', height: '250px' }}></img>
+                                            <div className="card-img-overlay">
+                                                <h5 className="card-title">{picture.name}</h5>
+                                                <button className="btn btn-sm btn-light btn-download" onClick={(e) => this.handleDownloadButtonOnClick(e, picture)}><i className="fas fa-file-download"></i></button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            :
+                            ""
+                        }
+                        {this.state.files.length ?
+                            <div>
+                                <div className="pb-2 mt-4 mb-2 ">
+                                    <h5>Files</h5>
+                                </div>
+                                <div className="row">
+                                    <div className="col-12">
+                                        <table className="table">
+                                            <tbody>
+                                            {this.state.files.map(file => (
+                                                <tr>
+                                                    <td>{file.name}</td>
+                                                    <td>
+                                                        <button className="btn btn-sm btn-dark" onClick={(e) => this.handleDownloadButtonOnClick(e, file)}><i className="fas fa-file-download"></i></button>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
-                            ))}
-                        </div>
+                            </div>
+                            :
+                            ""
+                        }
                     </div>
                 }
             </div>
