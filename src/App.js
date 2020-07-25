@@ -166,7 +166,7 @@ class App extends React.Component {
                         })
                     }
 
-                    if(arrayOfPictures.length > 0) {
+                    if(arrayOfFiles.length > 0) {
                         this.setState({
                             files: arrayOfFiles
                         })
@@ -177,12 +177,6 @@ class App extends React.Component {
                             pictures: arrayOfPictures
                         })
                     }
-
-                    // this.setState({
-                    //     folders: arrayOfFolders,
-                    //     files: arrayOfFiles,
-                    //     pictures: arrayOfPictures
-                    // })
                 } else {
                     console.log('No files found.')
                 }
@@ -250,14 +244,6 @@ class App extends React.Component {
                 :
                     <div className="col-md-12">
                         <div className="mb-2">
-                            <h5>
-                                {this.state.previousDirectories.length === 0 ?
-                                    ""
-                                :
-                                    <button className="btn btn-outline-secondary mr-3" onClick={(e) => this.handleBackButtonOnClick(e)}><i className="fas fa-arrow-left"></i></button>
-                                }
-                                Folders
-                            </h5>
                             <nav aria-label="breadcrumb">
                                 <ol className="breadcrumb">
                                     <li className="breadcrumb-item"><i className="fas fa-home"></i></li>
@@ -267,15 +253,29 @@ class App extends React.Component {
                                 </ol>
                             </nav>
                         </div>
-                        <div className="card-columns">
-                            {this.state.folders.map(folder => (
-                                <div className="card cursor-pointer" key={folder.id} onClick={(e) => this.handleFolderOnClick(e, folder.id, folder.name)}>
-                                    <div className="card-body">
-                                        <p>{folder.name}</p>
-                                    </div>
+                        {this.state.previousDirectories.length === 0 ?
+                            ""
+                            :
+                            <button className="btn btn-outline-secondary mr-3" onClick={(e) => this.handleBackButtonOnClick(e)}><i className="fas fa-arrow-left"></i></button>
+                        }
+                        {this.state.folders.length ?
+                            <div>
+                                <div className="pb-2 mt-4 mb-2">
+                                    <h5>Folders</h5>
                                 </div>
-                            ))}
-                        </div>
+                                <div className="card-columns">
+                                    {this.state.folders.map(folder => (
+                                        <div className="card cursor-pointer" key={folder.id} onClick={(e) => this.handleFolderOnClick(e, folder.id, folder.name)}>
+                                            <div className="card-body">
+                                                <p>{folder.name}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            :
+                            ""
+                        }
                         {this.state.pictures.length ? 
                             <div>
                                 <div className="pb-2 mt-4 mb-2">
