@@ -277,7 +277,7 @@ class App extends React.Component {
                             </div>
                         </form>
                     </div>
-                :
+                    :
                     <div className="col-md-12">
                         <div className="mb-2">
                             <nav aria-label="breadcrumb">
@@ -294,69 +294,71 @@ class App extends React.Component {
                             :
                             <button className="btn btn-outline-secondary mr-3" onClick={(e) => this.handleBackButtonOnClick(e)}><i className="fas fa-arrow-left"></i></button>
                         }
-                        {this.state.folders.length ?
-                            <div>
-                                <div className="pb-2 mt-4 mb-2">
-                                    <h5>Folders</h5>
-                                </div>
-                                <div className="card-columns">
-                                    {this.state.folders.map(folder => (
-                                        <div className="card cursor-pointer" key={folder.id} onClick={(e) => this.handleFolderOnClick(e, folder.id, folder.name)}>
-                                            <div className="card-body">
-                                                <p>{folder.name}</p>
+                        <div className="row">
+                            {this.state.folders.length ?
+                                <div className="col-md-12 col-lg-6 col-xl-6">
+                                    <div className="pb-2 mt-4 mb-2">
+                                        <h5>Folders</h5>
+                                    </div>
+                                    <div className="card-columns">
+                                        {this.state.folders.map(folder => (
+                                            <div className="card cursor-pointer" key={folder.id} onClick={(e) => this.handleFolderOnClick(e, folder.id, folder.name)}>
+                                                <div className="card-body">
+                                                    <p>{folder.name}</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                            :
-                            ""
-                        }
-                        {this.state.pictures.length ? 
-                            <div>
-                                <div className="pb-2 mt-4 mb-2">
-                                    <h5>Images</h5>
-                                </div>
-                                <div className="card-columns">
-                                    {this.state.pictures.map(picture => (
-                                    <div className="card text-white border-dark" key={picture.id}>
-                                            <img className="card-img overlayed" src={picture.thumbnailLink} alt={picture.name} style={{ backgroundSize: 'cover', height: '250px' }}></img>
-                                            <div className="card-img-overlay">
-                                                <h5 className="card-title">{picture.name}</h5>
-                                                <button className="btn btn-sm btn-light btn-download" onClick={(e) => this.handleDownloadButtonOnClick(e, picture)}><i className="fas fa-file-download"></i></button>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                            :
-                            ""
-                        }
-                        {this.state.files.length ?
-                            <div>
-                                <div className="pb-2 mt-4 mb-2 ">
-                                    <h5>Files</h5>
-                                </div>
-                                <div className="row">
-                                    <div className="col-12">
-                                        <table className="table">
-                                            <tbody>
-                                            {this.state.files.map(file => (
-                                                <tr>
-                                                    <td>{file.name}</td>
-                                                    <td>
-                                                        <button className="btn btn-sm btn-dark" onClick={(e) => this.handleDownloadButtonOnClick(e, file)}><i className="fas fa-file-download"></i></button>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                            </tbody>
-                                        </table>
+                                        ))}
                                     </div>
                                 </div>
-                            </div>
-                            :
-                            ""
-                        }
+                                :
+                                ""
+                            }
+                            {this.state.pictures.length ? 
+                                <div className="col-md-12 col-lg-6 col-xl-6">
+                                    <div className="pb-2 mt-4 mb-2">
+                                        <h5>Images</h5>
+                                    </div>
+                                    <div className="card-columns">
+                                        {this.state.pictures.map(picture => (
+                                        <div className="card text-white border-dark" key={picture.id}>
+                                                <img className="card-img overlayed" src={picture.thumbnailLink} alt={picture.name} style={{ backgroundSize: 'cover', height: '250px' }}></img>
+                                                <div className="card-img-overlay">
+                                                    <h5 className="card-title">{picture.name}</h5>
+                                                    <button className="btn btn-sm btn-light btn-download" onClick={(e) => this.handleDownloadButtonOnClick(e, picture)}><i className="fas fa-file-download"></i></button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                :
+                                ""
+                            }
+                            {this.state.files.length ?
+                                <div className="col-md-12 col-lg-12 col-xl-12">
+                                    <div className="pb-2 mt-4 mb-2 ">
+                                        <h5>Files</h5>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-12">
+                                            <table className="table">
+                                                <tbody>
+                                                {this.state.files.map(file => (
+                                                    <tr>
+                                                        <td>{file.name}</td>
+                                                        <td>
+                                                            <button className="btn btn-sm btn-dark" onClick={(e) => this.handleDownloadButtonOnClick(e, file)}><i className="fas fa-file-download"></i></button>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                :
+                                ""
+                            }
+                        </div>
                     </div>
                 }
             </div>
