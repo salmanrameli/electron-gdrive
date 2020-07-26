@@ -1,10 +1,8 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron')
-const { google } = require('googleapis');
 const path = require('path')
-const fs = require('fs')
 const isDev = require('electron-is-dev')
 
-const Store = require('electron-store');
+const Store = require('electron-store')
 const store = new Store();
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -95,70 +93,12 @@ ipcMain.on('open-auth-window', (event, url) => {
 	createAuthWin(url)
 })
 
-ipcMain.on('download-file', (event, id, name, mimeType) => {
-    dialog.showSaveDialog({defaultPath: name, properties: 'openDirectory'}).then(response => {
+ipcMain.on('download-file', (event, data) => {
+    const parsedData = JSON.parse(data)
+
+    dialog.showSaveDialog({defaultPath: parsedData.fileName, properties: 'openDirectory'}).then(response => {
         const filePath = response.filePath
 
-        console.log(`path: ${filePath}, name: ${name}, mimeType: ${mimeType}`)
-
-        fs.readFile(path.resolve(`${__dirname}/src/credentials.json`), (err, content) => {
-            if(err) {
-                return console.log('Error loading client secret file:', err)
-            } else {
-                // Authorize a client with credentials, then call the Google Drive API.
-                content = JSON.parse(content)          
-                const { client_secret, client_id, redirect_uris } = content.installed
-                const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
-
-                fs.readFile(path.resolve(`token.json`), (err, token) => {
-                    oAuth2Client.setCredentials(JSON.parse(token));
-
-                    const dest = fs.createWriteStream(filePath);
-                    const drive = google.drive({version: 'v3', oAuth2Client})
-
-                    let progress = 0;
-
-                    // drive.files.get({
-                    //     fileId: id,
-                    //     alt: 'media'
-                    // }, {responseType: 'stream'}, function(error, response) {
-                    //     console.log(`response: ${response}`)
-                    //     response.data
-                    //         .on('end', () => {
-                    //             console.log('Done');
-                    //         })
-                    //         .on('error', err => {
-                    //             console.log('Error', err);
-                    //         })
-                    //         .pipe(dest);
-                    // })
-
-                    drive.files.get({
-                        fileId: id,
-                        alt: 'media'
-                    }, {responseType: 'stream'}).then(response => {
-                        return new Promise((resolve, reject) => {
-                            console.log(response.data)
-
-                            response.data
-                                .on('end', () => {
-                                    console.log('Done downloading file.');
-                                    resolve(filePath);
-                                })
-                                .on('error', err => {
-                                    console.error('Error downloading file.');
-                                    reject(err);
-                                })
-                                .on('data', d => {
-                                    progress += d.length;
-                                    
-                                    console.log(progress)
-                                })
-                                .pipe(dest);
-                        })
-                    }).catch(error => console.log(error))
-                });
-            }
-        });
+        event.reply('start-download', filePath)
     })
 })

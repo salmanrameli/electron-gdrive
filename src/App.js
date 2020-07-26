@@ -1,10 +1,9 @@
 import React from 'react';
 
-// const {dialog} = window.require('electron')
-const fs = window.fs;
 const { google } = window.google;
-
+const fs = window.fs;
 const ipcRenderer = window.ipcRenderer;
+
 const Store = window.Store;
 const store = new Store();
 
@@ -12,12 +11,6 @@ const store = new Store();
 // const SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
 const SCOPES = [
     'https://www.googleapis.com/auth/drive',
-    'https://www.googleapis.com/auth/drive.appdata',
-    'https://www.googleapis.com/auth/drive.file',
-    'https://www.googleapis.com/auth/drive.metadata',
-    'https://www.googleapis.com/auth/drive.metadata.readonly',
-    'https://www.googleapis.com/auth/drive.photos.readonly',
-    'https://www.googleapis.com/auth/drive.readonly',
 ];
 
 // The file token.json stores the user's access and refresh tokens, and is
@@ -222,7 +215,30 @@ class App extends React.Component {
     }
 
     handleDownloadButtonOnClick(e, file) {
-        ipcRenderer.send('download-file', file.id, file.name, file.mimeType, this.state.oAuth2Client)
+        const mimeType = String(file.mimeType)
+        const method = mimeType.includes('vnd') ? "export" : "get"
+
+        let data = {
+            fileName: file.name,
+        }
+
+        ipcRenderer.send('download-file', JSON.stringify(data))
+
+        ipcRenderer.on('start-download', (event, filePath) => {
+            const auth = this.state.oAuth2Client
+            const drive = google.drive({version: 'v3', auth})
+
+            drive.files.get({
+                fileId: file.id,
+                alt: "media"
+            }, { responseType: "arraybuffer" },
+                function(error, { data }) {
+                    fs.writeFile(filePath, Buffer.from(data), error => {
+                        if(error) console.log(error);
+                    });
+                }
+            );
+        })
     }
 
     render() {
