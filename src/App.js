@@ -216,7 +216,7 @@ class App extends React.Component {
 
     handleDownloadButtonOnClick(e, file) {
         const mimeType = String(file.mimeType)
-        const method = mimeType.includes('vnd') ? "export" : "get"
+        const method = mimeType.includes('vnd.google-apps') ? "export" : "get"
 
         let data = {
             fileName: file.name,
@@ -228,16 +228,36 @@ class App extends React.Component {
             const auth = this.state.oAuth2Client
             const drive = google.drive({version: 'v3', auth})
 
-            drive.files.get({
-                fileId: file.id,
-                alt: "media"
-            }, { responseType: "arraybuffer" },
-                function(error, { data }) {
-                    fs.writeFile(filePath, Buffer.from(data), error => {
-                        if(error) console.log(error);
-                    });
-                }
-            );
+            if(method === "get") {
+                drive.files.get({
+                    fileId: file.id,
+                    alt: "media"
+                }, { responseType: "arraybuffer" },
+                    function(error, { data }) {
+                        fs.writeFile(filePath, Buffer.from(data), error => {
+                            if(error) console.log(error);
+                        });
+                    }
+                );
+            } 
+            
+            if(method === "export") {
+                drive.files.export({
+                    auth: auth,
+                    fileId: file.id,
+                    mimeType: "application/pdf"
+                }, { responseType: "arraybuffer" },
+                    (error, res) => {
+                        if(error) {
+                            console.log(error)
+                        } else {
+                            fs.writeFile(filePath + ".pdf", Buffer.from(res.data), function(error) {
+                                if(error) console.log(error)
+                            });
+                        }
+                    }
+                );
+            }
         })
     }
 
