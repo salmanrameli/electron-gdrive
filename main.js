@@ -15,6 +15,7 @@ function createWindow () {
     win = new BrowserWindow({
         width: 720,
         height: 960,
+        titleBarStyle: 'hidden',
         webPreferences: {
             nodeIntegration: false,
             preload: path.resolve(`${__dirname}/public/renderer.js`),

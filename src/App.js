@@ -265,7 +265,7 @@ class App extends React.Component {
         return(
             <div className="row">
                 {this.state.needToken ? 
-                    <div className="col-md-12">
+                    <div className="col-md-12 ml-2 mr-2">
                         <h3>Please enter authorization token below</h3>
                         <form id="authCodeForm" onSubmit={this.onSubmitAuthCodeHandler}>
                             <div className="form-row">
@@ -279,12 +279,14 @@ class App extends React.Component {
                     </div>
                     :
                     <div className="col-md-12">
-                        <div className="mb-2">
+                        <div className="breadcrumb-area">
                             <nav aria-label="breadcrumb">
-                                <ol className="breadcrumb">
-                                    <li className="breadcrumb-item"><i className="fas fa-home"></i></li>
+                                <ol className="breadcrumb pr-4">
+                                    <li className="breadcrumb-item ml-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path style={{ fill: 'white' }} d="M21 13v10h-6v-6h-6v6h-6v-10h-3l12-12 12 12h-3zm-1-5.907v-5.093h-3v2.093l3 3z"/></svg>
+                                    </li>
                                     {this.state.previousDirectoriesName.map((name, index) => (
-                                        <li className="breadcrumb-item" key={index}>{name}</li>
+                                        <li className="breadcrumb-item text-white" key={index}>{name}</li>
                                     ))}
                                 </ol>
                             </nav>
@@ -292,12 +294,12 @@ class App extends React.Component {
                         {this.state.previousDirectories.length === 0 ?
                             ""
                             :
-                            <button className="btn btn-outline-secondary mr-3" onClick={(e) => this.handleBackButtonOnClick(e)}><i className="fas fa-arrow-left"></i></button>
+                            <button className="btn btn-outline-secondary ml-3" onClick={(e) => this.handleBackButtonOnClick(e)}><i className="fas fa-arrow-left"></i></button>
                         }
-                        <div className="row">
+                        <div className="row ml-1 mr-1 scrollable">
                             {this.state.folders.length ?
                                 <div className="col-md-12 col-lg-6 col-xl-6">
-                                    <div className="pb-2 mt-4 mb-2">
+                                    <div className="mt-2 mb-2">
                                         <h5>Folders</h5>
                                     </div>
                                     <div className="card-columns">
@@ -315,7 +317,7 @@ class App extends React.Component {
                             }
                             {this.state.pictures.length ? 
                                 <div className="col-md-12 col-lg-6 col-xl-6">
-                                    <div className="pb-2 mt-4 mb-2">
+                                    <div className="mt-2 mb-2">
                                         <h5>Images</h5>
                                     </div>
                                     <div className="card-columns">
@@ -324,7 +326,9 @@ class App extends React.Component {
                                                 <img className="card-img overlayed" src={picture.thumbnailLink} alt={picture.name} style={{ backgroundSize: 'cover', height: '250px' }}></img>
                                                 <div className="card-img-overlay">
                                                     <h5 className="card-title">{picture.name}</h5>
-                                                    <button className="btn btn-sm btn-light btn-download" onClick={(e) => this.handleDownloadButtonOnClick(e, picture)}><i className="fas fa-file-download"></i></button>
+                                                    <button className="btn btn-sm btn-download" onClick={(e) => this.handleDownloadButtonOnClick(e, picture)} title={`Download ${picture.name}`}>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path style={{ fill: 'white' }} d="M16 11h5l-9 10-9-10h5v-11h8v11zm1 11h-10v2h10v-2z"/></svg>
+                                                    </button>
                                                 </div>
                                             </div>
                                         ))}
@@ -335,7 +339,7 @@ class App extends React.Component {
                             }
                             {this.state.files.length ?
                                 <div className="col-md-12 col-lg-12 col-xl-12">
-                                    <div className="pb-2 mt-4 mb-2 ">
+                                    <div className="mt-2 mb-2">
                                         <h5>Files</h5>
                                     </div>
                                     <div className="row">
@@ -346,7 +350,9 @@ class App extends React.Component {
                                                     <tr>
                                                         <td>{file.name}</td>
                                                         <td>
-                                                            <button className="btn btn-sm btn-dark" onClick={(e) => this.handleDownloadButtonOnClick(e, file)}><i className="fas fa-file-download"></i></button>
+                                                            <button className="btn btn-sm float-right" onClick={(e) => this.handleDownloadButtonOnClick(e, file)} title={`Download ${file.name}`}>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M16 11h5l-9 10-9-10h5v-11h8v11zm1 11h-10v2h10v-2z"/></svg>
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                 ))}
