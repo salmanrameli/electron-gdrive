@@ -30,7 +30,7 @@ class Files extends Component {
                         <table className="table">
                             <tbody>
                             {this.state.files.map(file => (
-                                <tr>
+                                <tr key={file.id}>
                                     <td>{file.name}</td>
                                     <td>
                                         <button className="btn btn-sm float-right" onClick={(e) => this.handleDownloadButtonOnClick(e, file)} title={`Download ${file.name}`}>

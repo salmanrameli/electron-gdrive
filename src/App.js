@@ -131,7 +131,7 @@ class App extends React.Component {
         drive.files.list({
             corpora: 'user',
             orderBy: 'folder, name',
-            fields: 'nextPageToken, files(id, name, mimeType, thumbnailLink)',
+            fields: 'nextPageToken, files(id, name, mimeType, thumbnailLink, imageMediaMetadata, createdTime, size)',
             spaces: 'drive',
             q: `'${directory}' in parents`
         }, (err, res) => {
@@ -147,6 +147,9 @@ class App extends React.Component {
         
                     files.map((file) => {
                         let mimeType = String(file.mimeType)
+                        let createdTime = new Date(file.createdTime)
+                        
+                        file.createdTime = createdTime.toLocaleString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
 
                         if(mimeType.includes("vnd.google-apps.folder")) {
                             arrayOfFolders.push(file)

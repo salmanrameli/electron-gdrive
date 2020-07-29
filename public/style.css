@@ -41,12 +41,12 @@ img {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.card-columns .card {
+.card-columns .card-folder {
   max-width: 100%;
   max-height: 100%;
   -webkit-transition: .2s all;
 }
-.card-columns .card:hover {
+.card-columns .card-folder:hover {
   -webkit-filter: brightness(90%);
 }
 .info {
@@ -65,6 +65,11 @@ img {
 }
 .overlayed {
   filter: brightness(0.5)
+}
+.btn-picture-detail {
+  position: absolute;
+  bottom: 5px;
+  left: 0px;
 }
 .btn-download {
   position: absolute;

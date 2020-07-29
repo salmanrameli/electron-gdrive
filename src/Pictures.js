@@ -27,14 +27,22 @@ class Pictures extends Component {
                 </div>
                 <div className="card-columns">
                     {this.state.pictures.map(picture => (
-                    <div className="card text-white border-dark" key={picture.id}>
+                        <div className="card text-white border-dark" key={picture.id}>
                             <img className="card-img overlayed" src={picture.thumbnailLink} alt={picture.name} style={{ backgroundSize: 'cover', height: '250px' }}></img>
                             <div className="card-img-overlay">
                                 <h5 className="card-title" title={picture.name}>{picture.name}</h5>
-                                <div class="info">
-                                    <p>Info 1<br></br>info1.1<br></br>info1.2</p>
-                                    <p>Info 2</p>
-                                    <p>Info 3</p>
+                                <div className="btn-group dropup btn-picture-detail">
+                                    <button type="button" className="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Details">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path style={{ fill: 'white' }} d="M12 24c6.627 0 12-5.373 12-12s-5.373-12-12-12-12 5.373-12 12 5.373 12 12 12zm1-6h-2v-8h2v8zm-1-12.25c.69 0 1.25.56 1.25 1.25s-.56 1.25-1.25 1.25-1.25-.56-1.25-1.25.56-1.25 1.25-1.25z"/></svg>                                    </button>
+                                    <div className="dropdown-menu pt-1 pr-1 pb-1 pl-1 w-100">
+                                        <small>Width: {picture.imageMediaMetadata.width} px</small>
+                                        <br></br>
+                                        <small>Height: {picture.imageMediaMetadata.height} px</small>
+                                        <br></br>
+                                        <small>Created at: {picture.createdTime}</small>
+                                        <br></br>
+                                        <small>{picture.test}</small>
+                                    </div>
                                 </div>
                                 <button className="btn btn-sm btn-download" onClick={(e) => this.handleDownloadButtonOnClick(e, picture)} title={`Download ${picture.name}`}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path style={{ fill: 'white' }} d="M16 11h5l-9 10-9-10h5v-11h8v11zm1 11h-10v2h10v-2z"/></svg>
