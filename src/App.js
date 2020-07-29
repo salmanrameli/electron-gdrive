@@ -1,10 +1,14 @@
 import React from 'react';
 
+import Folders from './Folders';
+import Pictures from './Pictures';
+import Files from './Files';
+
 const { google } = window.google;
 const fs = window.fs;
 const ipcRenderer = window.ipcRenderer;
-
 const Store = window.Store;
+
 const store = new Store();
 
 // If modifying these scopes, delete token.json.
@@ -177,7 +181,7 @@ class App extends React.Component {
         });
     }
 
-    handleFolderOnClick(e, id, name) {        
+    handleFolderOnClick(id, name) {        
         if(this.state.previousDirectories.length === 0) {
             this.state.previousDirectories.push("root")
             this.state.previousDirectoriesName.push(name)
@@ -214,7 +218,7 @@ class App extends React.Component {
         this.listDirectoryContent(previousDirectory)
     }
 
-    handleDownloadButtonOnClick(e, file) {
+    handleDownloadButtonOnClick(file) {
         const mimeType = String(file.mimeType)
         const method = mimeType.includes('vnd.google-apps') ? "export" : "get"
 
@@ -298,77 +302,26 @@ class App extends React.Component {
                         }
                         <div className="row ml-1 mr-1 scrollable">
                             {this.state.folders.length ?
-                                <div className="col-md-12 col-lg-6 col-xl-6">
-                                    <div className="mt-2 mb-2">
-                                        <h5>Folders</h5>
-                                    </div>
-                                    <div className="card-columns">
-                                        {this.state.folders.map(folder => (
-                                            <div className="card cursor-pointer" key={folder.id} onClick={(e) => this.handleFolderOnClick(e, folder.id, folder.name)}>
-                                                <div className="card-body">
-                                                    <p>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 22h-24v-14h7.262c1.559 0 2.411-.708 5.07-3h11.668v17zm-16.738-16c.64 0 1.11-.271 2.389-1.34l-2.651-2.66h-7v4h7.262z"/></svg>
-                                                        &nbsp; {folder.name}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
+                                <Folders 
+                                    folders = {this.state.folders}
+                                    openFolder = {this.handleFolderOnClick} 
+                                />
                                 :
                                 ""
                             }
                             {this.state.pictures.length ? 
-                                <div className="col-md-12 col-lg-6 col-xl-6">
-                                    <div className="mt-2 mb-2">
-                                        <h5>Images</h5>
-                                    </div>
-                                    <div className="card-columns">
-                                        {this.state.pictures.map(picture => (
-                                        <div className="card text-white border-dark" key={picture.id}>
-                                                <img className="card-img overlayed" src={picture.thumbnailLink} alt={picture.name} style={{ backgroundSize: 'cover', height: '250px' }}></img>
-                                                <div className="card-img-overlay">
-                                                    <h5 className="card-title" title={picture.name}>{picture.name}</h5>
-                                                    <div class="info">
-                                                        <p>Info 1<br></br>info1.1<br></br>info1.2</p>
-                                                        <p>Info 2</p>
-                                                        <p>Info 3</p>
-                                                    </div>
-                                                    <button className="btn btn-sm btn-download" onClick={(e) => this.handleDownloadButtonOnClick(e, picture)} title={`Download ${picture.name}`}>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path style={{ fill: 'white' }} d="M16 11h5l-9 10-9-10h5v-11h8v11zm1 11h-10v2h10v-2z"/></svg>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
+                                <Pictures
+                                    pictures = {this.state.pictures}
+                                    downloadPicture = {this.handleDownloadButtonOnClick}
+                                />
                                 :
                                 ""
                             }
                             {this.state.files.length ?
-                                <div className="col-md-12 col-lg-12 col-xl-12">
-                                    <div className="mt-2 mb-2">
-                                        <h5>Files</h5>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-12">
-                                            <table className="table">
-                                                <tbody>
-                                                {this.state.files.map(file => (
-                                                    <tr>
-                                                        <td>{file.name}</td>
-                                                        <td>
-                                                            <button className="btn btn-sm float-right" onClick={(e) => this.handleDownloadButtonOnClick(e, file)} title={`Download ${file.name}`}>
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M16 11h5l-9 10-9-10h5v-11h8v11zm1 11h-10v2h10v-2z"/></svg>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
+                                <Files
+                                    files = {this.state.files}
+                                    downloadFile = {this.handleDownloadButtonOnClick}
+                                />
                                 :
                                 ""
                             }
