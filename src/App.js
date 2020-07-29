@@ -306,7 +306,10 @@ class App extends React.Component {
                                         {this.state.folders.map(folder => (
                                             <div className="card cursor-pointer" key={folder.id} onClick={(e) => this.handleFolderOnClick(e, folder.id, folder.name)}>
                                                 <div className="card-body">
-                                                    <p>{folder.name}</p>
+                                                    <p>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 22h-24v-14h7.262c1.559 0 2.411-.708 5.07-3h11.668v17zm-16.738-16c.64 0 1.11-.271 2.389-1.34l-2.651-2.66h-7v4h7.262z"/></svg>
+                                                        &nbsp; {folder.name}
+                                                    </p>
                                                 </div>
                                             </div>
                                         ))}
@@ -325,7 +328,12 @@ class App extends React.Component {
                                         <div className="card text-white border-dark" key={picture.id}>
                                                 <img className="card-img overlayed" src={picture.thumbnailLink} alt={picture.name} style={{ backgroundSize: 'cover', height: '250px' }}></img>
                                                 <div className="card-img-overlay">
-                                                    <h5 className="card-title">{picture.name}</h5>
+                                                    <h5 className="card-title" title={picture.name}>{picture.name}</h5>
+                                                    <div class="info">
+                                                        <p>Info 1<br></br>info1.1<br></br>info1.2</p>
+                                                        <p>Info 2</p>
+                                                        <p>Info 3</p>
+                                                    </div>
                                                     <button className="btn btn-sm btn-download" onClick={(e) => this.handleDownloadButtonOnClick(e, picture)} title={`Download ${picture.name}`}>
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path style={{ fill: 'white' }} d="M16 11h5l-9 10-9-10h5v-11h8v11zm1 11h-10v2h10v-2z"/></svg>
                                                     </button>
