@@ -270,7 +270,7 @@ class App extends React.Component {
 
     render() {
         return(
-            <div className="row">
+            <div className="row height-100">
                 {this.state.needToken ? 
                     <div className="col-md-12 ml-2 mr-2">
                         <h3>Please enter authorization token below</h3>
@@ -293,7 +293,7 @@ class App extends React.Component {
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path style={{ fill: 'white' }} d="M21 13v10h-6v-6h-6v6h-6v-10h-3l12-12 12 12h-3zm-1-5.907v-5.093h-3v2.093l3 3z"/></svg>
                                     </li>
                                     {this.state.previousDirectoriesName.map((name, index) => (
-                                        <li className="breadcrumb-item text-white" key={index}>{name}</li>
+                                        <li className="breadcrumb-item text-white" key={index}><small>{name}</small></li>
                                     ))}
                                 </ol>
                             </nav>

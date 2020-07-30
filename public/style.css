@@ -15,14 +15,21 @@ html, body {
   border-bottom: 1px solid #000;
 }
 .scrollable {
-  height: 90vh;
+  height: 93vh;
+  /* height: calc(100vh - 65.781px); */
   overflow-y: scroll;
   overflow-x: hidden;
+}
+.height-100 {
+  height: 100%
 }
 .breadcrumb-area {
   overflow-x: hidden;
   margin-left: -15px;
   margin-right: -15px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 .breadcrumb {
   border-radius: 0;
