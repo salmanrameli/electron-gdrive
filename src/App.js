@@ -169,6 +169,8 @@ class App extends React.Component {
                         } else if(mimeType.includes("image")) {
                             arrayOfPictures.push(file)
                         } else {
+                            file.isGoogleDocsFormat = mimeType.includes("application/vnd.google-apps") ? true : false
+
                             arrayOfFiles.push(file)
                         }
                     });
