@@ -45,6 +45,7 @@ class App extends React.Component {
         this.onSubmitAuthCodeHandler = this.onSubmitAuthCodeHandler.bind(this)
         this.listDirectoryContent = this.listDirectoryContent.bind(this)
         this.handleFolderOnClick = this.handleFolderOnClick.bind(this)
+        this.handleHomeButtonOnClick = this.handleHomeButtonOnClick.bind(this)
         this.handleDownloadButtonOnClick = this.handleDownloadButtonOnClick.bind(this)
     }
 
@@ -124,6 +125,16 @@ class App extends React.Component {
         });
     }
 
+    bytesToSize(bytes) {
+        var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+
+        if (bytes == 0) return '0 Byte';
+
+        var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+
+        return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+     }
+
     listDirectoryContent(directory = 'root') {
         const auth = this.state.oAuth2Client
         const drive = google.drive({version: 'v3', auth})
@@ -150,6 +161,7 @@ class App extends React.Component {
                         let createdTime = new Date(file.createdTime)
                         
                         file.createdTime = createdTime.toLocaleString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+                        file.size = this.bytesToSize(file.size)
 
                         if(mimeType.includes("vnd.google-apps.folder")) {
                             arrayOfFolders.push(file)
@@ -213,6 +225,15 @@ class App extends React.Component {
         this.listDirectoryContent(id)
     }
 
+    handleHomeButtonOnClick(e) {
+        this.setState({
+            previousDirectories: [],
+            previousDirectoriesName: []
+        })
+
+        this.listDirectoryContent()
+    }
+
     handleBackButtonOnClick(e) {
         let previousDirectory = this.state.previousDirectories.pop()
 
@@ -270,7 +291,7 @@ class App extends React.Component {
 
     render() {
         return(
-            <div className="row height-100">
+            <div className="row">
                 {this.state.needToken ? 
                     <div className="col-md-12 ml-2 mr-2">
                         <h3>Please enter authorization token below</h3>
@@ -285,11 +306,46 @@ class App extends React.Component {
                         </form>
                     </div>
                     :
-                    <div className="col-md-12">
+                    <div style={{ width: '100%' }}>
+                        <div className="col-md-12 scrollable">
+                            {this.state.previousDirectories.length === 0 ?
+                                ""
+                                :
+                                <button className="btn btn-outline-light ml-3 mt-3" onClick={(e) => this.handleBackButtonOnClick(e)}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M13.427 3.021h-7.427v-3.021l-6 5.39 6 5.61v-3h7.427c3.071 0 5.561 2.356 5.561 5.427 0 3.071-2.489 5.573-5.561 5.573h-7.427v5h7.427c5.84 0 10.573-4.734 10.573-10.573s-4.733-10.406-10.573-10.406z"/></svg>
+                                </button>
+                            }
+                            <div className="row ml-0 mr-0">
+                                {this.state.folders.length ?
+                                    <Folders 
+                                        folders = {this.state.folders}
+                                        openFolder = {this.handleFolderOnClick} 
+                                    />
+                                    :
+                                    ""
+                                }
+                                {this.state.pictures.length ? 
+                                    <Pictures
+                                        pictures = {this.state.pictures}
+                                        downloadPicture = {this.handleDownloadButtonOnClick}
+                                    />
+                                    :
+                                    ""
+                                }
+                                {this.state.files.length ?
+                                    <Files
+                                        files = {this.state.files}
+                                        downloadFile = {this.handleDownloadButtonOnClick}
+                                    />
+                                    :
+                                    ""
+                                }
+                            </div>
+                        </div>
                         <div className="breadcrumb-area">
                             <nav aria-label="breadcrumb">
                                 <ol className="breadcrumb pr-4">
-                                    <li className="breadcrumb-item ml-3">
+                                    <li className="breadcrumb-item ml-3" onClick={(e) => this.handleHomeButtonOnClick(e)} title="Back to home directory">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path style={{ fill: 'white' }} d="M21 13v10h-6v-6h-6v6h-6v-10h-3l12-12 12 12h-3zm-1-5.907v-5.093h-3v2.093l3 3z"/></svg>
                                     </li>
                                     {this.state.previousDirectoriesName.map((name, index) => (
@@ -297,37 +353,6 @@ class App extends React.Component {
                                     ))}
                                 </ol>
                             </nav>
-                        </div>
-                        {this.state.previousDirectories.length === 0 ?
-                            ""
-                            :
-                            <button className="btn btn-outline-secondary ml-3" onClick={(e) => this.handleBackButtonOnClick(e)}><i className="fas fa-arrow-left"></i></button>
-                        }
-                        <div className="row ml-1 mr-1 scrollable">
-                            {this.state.folders.length ?
-                                <Folders 
-                                    folders = {this.state.folders}
-                                    openFolder = {this.handleFolderOnClick} 
-                                />
-                                :
-                                ""
-                            }
-                            {this.state.pictures.length ? 
-                                <Pictures
-                                    pictures = {this.state.pictures}
-                                    downloadPicture = {this.handleDownloadButtonOnClick}
-                                />
-                                :
-                                ""
-                            }
-                            {this.state.files.length ?
-                                <Files
-                                    files = {this.state.files}
-                                    downloadFile = {this.handleDownloadButtonOnClick}
-                                />
-                                :
-                                ""
-                            }
                         </div>
                     </div>
                 }

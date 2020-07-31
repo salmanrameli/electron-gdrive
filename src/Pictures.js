@@ -35,13 +35,13 @@ class Pictures extends Component {
                                     <button type="button" className="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Details">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path style={{ fill: 'white' }} d="M12 24c6.627 0 12-5.373 12-12s-5.373-12-12-12-12 5.373-12 12 5.373 12 12 12zm1-6h-2v-8h2v8zm-1-12.25c.69 0 1.25.56 1.25 1.25s-.56 1.25-1.25 1.25-1.25-.56-1.25-1.25.56-1.25 1.25-1.25z"/></svg>                                    </button>
                                     <div className="dropdown-menu pt-1 pr-1 pb-1 pl-1 w-100">
-                                        <small>Width: {picture.imageMediaMetadata.width} px</small>
+                                        <small><b>Width</b>: {picture.imageMediaMetadata.width} px</small>
                                         <br></br>
-                                        <small>Height: {picture.imageMediaMetadata.height} px</small>
+                                        <small><b>Height</b>: {picture.imageMediaMetadata.height} px</small>
                                         <br></br>
-                                        <small>Created at: {picture.createdTime}</small>
+                                        <small><b>Created at</b>: {picture.createdTime}</small>
                                         <br></br>
-                                        <small>{picture.test}</small>
+                                        <small><b>Size</b>: {picture.size}</small>
                                     </div>
                                 </div>
                                 <button className="btn btn-sm btn-download" onClick={(e) => this.handleDownloadButtonOnClick(e, picture)} title={`Download ${picture.name}`}>
