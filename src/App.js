@@ -3,6 +3,7 @@ import React from 'react';
 import Folders from './Folders';
 import Pictures from './Pictures';
 import Files from './Files';
+import Breadcrumb from './Breadcrumb';
 
 const { google } = window.google;
 const fs = window.fs;
@@ -133,7 +134,7 @@ class App extends React.Component {
         var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
 
         return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
-     }
+    }
 
     listDirectoryContent(directory = 'root') {
         const auth = this.state.oAuth2Client
@@ -342,18 +343,10 @@ class App extends React.Component {
                                 }
                             </div>
                         </div>
-                        <div className="breadcrumb-area">
-                            <nav aria-label="breadcrumb">
-                                <ol className="breadcrumb pr-4">
-                                    <li className="breadcrumb-item ml-3" onClick={(e) => this.handleHomeButtonOnClick(e)} title="Back to home directory">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path style={{ fill: 'white' }} d="M21 13v10h-6v-6h-6v6h-6v-10h-3l12-12 12 12h-3zm-1-5.907v-5.093h-3v2.093l3 3z"/></svg>
-                                    </li>
-                                    {this.state.previousDirectoriesName.map((name, index) => (
-                                        <li className="breadcrumb-item text-white" key={index}><small>{name}</small></li>
-                                    ))}
-                                </ol>
-                            </nav>
-                        </div>
+                        <Breadcrumb
+                            previousDirectoriesName = {this.state.previousDirectoriesName}
+                            handleHomeButtonOnClick = {this.handleHomeButtonOnClick}
+                        />
                     </div>
                 }
             </div>
