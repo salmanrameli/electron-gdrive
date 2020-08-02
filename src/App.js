@@ -47,6 +47,7 @@ class App extends React.Component {
         this.listDirectoryContent = this.listDirectoryContent.bind(this)
         this.handleFolderOnClick = this.handleFolderOnClick.bind(this)
         this.handleHomeButtonOnClick = this.handleHomeButtonOnClick.bind(this)
+        this.handleOpenChosenDirectory = this.handleOpenChosenDirectory.bind(this)
         this.handleDownloadButtonOnClick = this.handleDownloadButtonOnClick.bind(this)
     }
 
@@ -245,6 +246,43 @@ class App extends React.Component {
         this.listDirectoryContent(previousDirectory)
     }
 
+    handleOpenChosenDirectory(index) {
+        let previousDirectories = [...this.state.previousDirectories]
+        let previousDirectoriesName = [...this.state.previousDirectoriesName]
+
+        console.log(`originalDirectories: ${previousDirectories}`)
+        console.log(`originalDirectoriesName: ${previousDirectoriesName}`)
+
+        let splicedIndex
+
+        if(index === 0) {
+            splicedIndex = index + 1
+        } else {
+            splicedIndex =  index + 2
+        }
+
+        previousDirectories = previousDirectories.splice(0, splicedIndex)
+        previousDirectoriesName = previousDirectoriesName.splice(0, index + 1)
+
+        console.log(`currentDirectories: ${previousDirectories}`)
+        console.log(`currentDirectoriesName: ${previousDirectoriesName}`)
+
+        this.setState({
+            previousDirectories: previousDirectories,
+            previousDirectoriesName: previousDirectoriesName,
+            folders: [],
+            files: [],
+            pictures: [],
+        })
+
+        const lastItem = previousDirectories
+
+        console.log(`lastItem: ${lastItem}`)
+        console.log(`selected lastItem: ${lastItem[lastItem.length - 1]}`)
+
+        // this.listDirectoryContent(lastItem[lastItem.length - 1])
+    }
+
     handleDownloadButtonOnClick(file) {
         const mimeType = String(file.mimeType)
         const method = mimeType.includes('vnd.google-apps') ? "export" : "get"
@@ -348,6 +386,7 @@ class App extends React.Component {
                         <Breadcrumb
                             previousDirectoriesName = {this.state.previousDirectoriesName}
                             handleHomeButtonOnClick = {this.handleHomeButtonOnClick}
+                            handleOpenChosenDirectory = {this.handleOpenChosenDirectory}
                         />
                     </div>
                 }
