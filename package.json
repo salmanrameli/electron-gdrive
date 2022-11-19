@@ -40,7 +40,7 @@
     "googleapis": "^55.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-scripts": "5.0.1"
   },
   "devDependencies": {
     "concurrently": "^5.2.0",
